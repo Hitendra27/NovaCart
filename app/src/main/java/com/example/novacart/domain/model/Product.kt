@@ -1,18 +1,10 @@
-package com.example.novacart.data.remote.dto
+package com.example.novacart.domain.model
 
-data class ProductResponse(
-    val products: List<ProductDto>,
-    val total: Int,
-    val skip: Int,
-    val limit: Int
-)
-
-data class ProductDto(
+data class Product(
     val id: Int,
     val title: String,
     val description: String,
     val price: Double,
-    val discountPercentage: Double,
     val rating: Double,
     val stock: Int,
     val brand: String,
