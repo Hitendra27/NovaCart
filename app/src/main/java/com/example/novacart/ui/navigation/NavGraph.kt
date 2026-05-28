@@ -1,18 +1,20 @@
 package com.example.novacart.ui.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavController
-import androidx.navigation.NavHost
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import com.example.novacart.ui.screens.detail.DetailScreen
 import com.example.novacart.ui.screens.home.HomeScreen
 
 @Composable
 fun NavGraph(
-    navController: NavController
+    navController: NavHostController
 ) {
 
     NavHost(
         navController = navController,
-        startDestinaion = Screen.Home.route
+        startDestination = Screen.Home.route
     ) {
 
         composable(Screen.Home.route) {
@@ -28,7 +30,7 @@ fun NavGraph(
             )
         }
 
-        composable(Screen.Detail.route){
+        composable(Screen.Detail.route) {
 
             DetailScreen()
         }

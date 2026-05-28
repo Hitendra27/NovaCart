@@ -17,6 +17,7 @@ import com.example.novacart.ui.viewmodel.ProductViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.lazy.grid.items
+import com.example.novacart.ui.components.ProductCard
 
 @Composable
 fun HomeScreen(
@@ -57,7 +58,7 @@ fun HomeScreen(
                 items(state.products) { product ->
 
                     ProductCard(
-                        product = product,
+                                product = product,
                         onClick = {
 
                             viewModel.selectProduct(product)

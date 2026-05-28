@@ -5,16 +5,16 @@ import com.example.novacart.domain.model.Product
 
 fun ProductDto.toDomain(): Product {
     return Product(
-        id = id,
-        title = title,
-        description = description,
-        price = price,
-        rating = rating,
-        stock = stock,
-        brand = brand,
-        category = category,
-        thumbnail = thumbnail,
-        images = images
+        id = id ?: 0,
+        title = title ?: "",
+        description = description ?: "",
+        price = price ?: 0.0,
+        rating = rating ?: 0.0,
+        stock = stock ?: 0,
+        brand = brand ?: "",
+        category = category ?: "",
+        thumbnail = thumbnail ?: "",
+        images = images ?: emptyList()
     )
 }
 
