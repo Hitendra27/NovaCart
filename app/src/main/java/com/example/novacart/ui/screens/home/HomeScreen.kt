@@ -59,10 +59,7 @@ fun HomeScreen(
 
                     ProductCard(
                                 product = product,
-                        onClick = {
-
-                            viewModel.selectProduct(product)
-
+                                onClick = {
                             onProductClick(product)
                         }
                     )

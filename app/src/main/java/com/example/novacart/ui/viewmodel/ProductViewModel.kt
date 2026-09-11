@@ -42,6 +42,7 @@ class ProductViewModel @Inject constructor(
                     isLoading = false,
                     products = products
                 )
+
             } catch (e: Exception) {
 
                 _state.value = _state.value.copy(
@@ -53,6 +54,17 @@ class ProductViewModel @Inject constructor(
     }
 
     fun selectProduct(product: Product) {
+
+        _state.value = _state.value.copy(
+            selectedProduct = product
+        )
+    }
+
+    fun getProductById(productId: Int) {
+
+        val product = _state.value.products.find {
+            it.id == productId
+        }
 
         _state.value = _state.value.copy(
             selectedProduct = product

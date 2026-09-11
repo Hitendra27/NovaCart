@@ -12,6 +12,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.novacart.ui.viewmodel.ProductViewModel
@@ -23,10 +24,15 @@ import coil.compose.AsyncImage
 
 @Composable
 fun DetailScreen(
+    productId: Int,
     viewModel: ProductViewModel = hiltViewModel()
 ) {
 
     val state  by viewModel.state.collectAsState()
+
+    LaunchedEffect(productId) {
+        viewModel.getProductById(productId)
+    }
 
     val product = state.selectedProduct
 
