@@ -3,6 +3,7 @@ package com.example.novacart.ui.screens.home
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.CircularProgressIndicator
@@ -17,8 +18,12 @@ import com.example.novacart.ui.viewmodel.ProductViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBar
 import com.example.novacart.ui.components.ProductCard
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     viewModel: ProductViewModel = hiltViewModel(),
@@ -27,42 +32,54 @@ fun HomeScreen(
 
     val state by viewModel.state.collectAsState()
 
-    when {
-        state.isLoading -> {
-
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text("NovaCart")
+                }
+            )
         }
+    ) { innerPadding ->
 
-        state.error != null -> {
+        when {
+            state.isLoading -> {
 
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(text = state.error!!)
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
             }
-        }
 
-        else -> {
+            state.error != null -> {
 
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                contentPadding = PaddingValues(8.dp)
-            ) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(text = state.error!!)
+                }
+            }
 
-                items(state.products) { product ->
+            else -> {
 
-                    ProductCard(
-                                product = product,
-                                onClick = {
-                            onProductClick(product)
-                        }
-                    )
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    contentPadding = PaddingValues(8.dp),
+                    modifier = Modifier.padding(innerPadding)
+                ) {
+
+                    items(state.products) { product ->
+
+                        ProductCard(
+                            product = product,
+                            onClick = {
+                                onProductClick(product)
+                            }
+                        )
+                    }
                 }
             }
         }

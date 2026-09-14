@@ -51,7 +51,9 @@ fun NavGraph(
 
             DetailScreen(
                 productId = productId,
-                viewModel = viewModel
+                onBackClick = {
+                    navController.popBackStack()
+                }
             )
         }
     }
