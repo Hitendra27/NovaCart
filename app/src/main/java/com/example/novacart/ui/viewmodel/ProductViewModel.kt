@@ -81,6 +81,15 @@ class ProductViewModel @Inject constructor(
         }
     }
 
+    fun clearSearch() {
+
+        _state.value = _state.value.copy(
+            searchQuery = ""
+        )
+
+        getProducts()
+    }
+
     fun selectProduct(product: Product) {
 
         _state.value = _state.value.copy(

@@ -16,9 +16,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.novacart.domain.model.Product
 import com.example.novacart.ui.viewmodel.ProductViewModel
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -26,7 +28,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import com.example.novacart.ui.components.ProductCard
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -36,43 +41,85 @@ fun HomeScreen(
     onProductClick: (Product) -> Unit
 ) {
 
+    var isSearching by remember {
+        mutableStateOf(false)
+    }
+
     val state by viewModel.state.collectAsState()
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                Text(
-                    text = "NovaCart",
-                    style = MaterialTheme.typography.titleLarge
-            )
-        },
-                actions = {
 
-                    IconButton(
-                        onClick = {
-                            // Search - coming next
-                        }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Search,
-                            contentDescription = "Search"
+            if (isSearching) {
+
+                TopAppBar(
+
+                    title = {
+
+                        TextField(
+                            value = state.searchQuery,
+                            onValueChange = { query ->
+                                viewModel.searchProducts(query)
+                            },
+                            placeholder = {
+                                Text("Search products...")
+                            },
+                            singleLine = true
                         )
-                    }
+                    },
 
-                    IconButton(
-                        onClick = {
-                            // Cart - coming later
+                    navigationIcon = {
+
+                        IconButton(
+                            onClick = {
+                                isSearching = false
+                                viewModel.clearSearch()
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = "Close Search"
+                            )
                         }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.ShoppingCart,
-                            contentDescription = "Shopping Cart"
-                        )
                     }
-                }
-            )
+                )
 
+            } else {
+
+                TopAppBar(
+                    title = {
+                        Text(
+                            text = "NovaCart",
+                            style = MaterialTheme.typography.titleLarge
+                        )
+                    },
+                    actions = {
+
+                        IconButton(
+                            onClick = {
+                                isSearching = true
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Search,
+                                contentDescription = "Search"
+                            )
+                        }
+
+                        IconButton(
+                            onClick = {
+                                // Cart - coming later
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.ShoppingCart,
+                                contentDescription = "Shopping Cart"
+                            )
+                        }
+                    }
+                )
+
+            }
         }
 
     ) { innerPadding ->
