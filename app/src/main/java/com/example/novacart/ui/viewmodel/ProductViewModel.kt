@@ -53,6 +53,34 @@ class ProductViewModel @Inject constructor(
         }
     }
 
+    fun searchProducts(query: String) {
+
+        viewModelScope.launch {
+
+            _state.value = _state.value.copy(
+                isLoading = true,
+                error = null,
+                searchQuery = query
+            )
+
+            try {
+
+                val products = repository.searchProducts(query)
+
+                _state.value = _state.value.copy(
+                    isLoading = false,
+                    products = products
+                )
+            } catch (e: Exception) {
+
+                _state.value = _state.value.copy(
+                    isLoading = false,
+                    error = e.message
+                )
+            }
+        }
+    }
+
     fun selectProduct(product: Product) {
 
         _state.value = _state.value.copy(
