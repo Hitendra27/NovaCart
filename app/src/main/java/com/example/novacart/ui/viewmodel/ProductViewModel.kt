@@ -62,12 +62,28 @@ class ProductViewModel @Inject constructor(
 
     fun getProductById(productId: Int) {
 
-        val product = _state.value.products.find {
-            it.id == productId
-        }
+        viewModelScope.launch {
 
-        _state.value = _state.value.copy(
-            selectedProduct = product
-        )
+            _state.value = _state.value.copy(
+                isLoading = true,
+                error = null
+            )
+
+            try {
+
+                val product = repository.getProductById(productId)
+
+                _state.value = _state.value.copy(
+                    isLoading = false,
+                    selectedProduct = product
+                )
+            } catch (e: Exception) {
+
+                _state.value = _state.value.copy(
+                    isLoading = false,
+                    error = e.message
+                )
+            }
+        }
     }
 }

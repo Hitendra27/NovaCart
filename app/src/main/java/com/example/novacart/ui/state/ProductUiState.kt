@@ -10,5 +10,7 @@ data class ProductUiState(
 
     val selectedProduct: Product? = null,
 
+    val searchQuery: String = "",
+
     val error: String? = null
 )

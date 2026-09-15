@@ -1,7 +1,5 @@
 package com.example.novacart.ui.screens.home
 
-import android.R
-import android.R.style
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -52,7 +50,7 @@ fun HomeScreen(
                 actions = {
 
                     IconButton(
-                        OnClick = {
+                        onClick = {
                             // Search - coming next
                         }
                     ) {
