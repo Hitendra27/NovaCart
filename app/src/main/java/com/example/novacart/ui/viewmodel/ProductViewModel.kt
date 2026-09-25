@@ -10,6 +10,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 
 @HiltViewModel
 class ProductViewModel @Inject constructor(
@@ -21,6 +23,8 @@ class ProductViewModel @Inject constructor(
     )
 
     val state: StateFlow<ProductUiState> = _state
+
+    private var searchJob: Job? = null
 
     init {
         getProducts()
