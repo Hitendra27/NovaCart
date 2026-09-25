@@ -2,7 +2,6 @@ package com.example.novacart.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.novacart.domain.model.Product
 import com.example.novacart.domain.repository.ProductRepository
 import com.example.novacart.ui.state.ProductUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -59,31 +58,11 @@ class ProductViewModel @Inject constructor(
 
     fun searchProducts(query: String) {
 
-        viewModelScope.launch {
+        searchJob?.cancel()
 
-            _state.value = _state.value.copy(
-                isLoading = true,
-                error = null,
-                searchQuery = query
-            )
-
-            try {
-
-                val products = repository.searchProducts(query)
-
-                _state.value = _state.value.copy(
-                    isLoading = false,
-                    products = products
-                )
-            } catch (e: Exception) {
-
-                _state.value = _state.value.copy(
-                    isLoading = false,
-                    error = e.message
-                )
-            }
-        }
+        searchJob = viewModelScope.launch {  }
     }
+
 
     fun clearSearch() {
 
@@ -92,13 +71,6 @@ class ProductViewModel @Inject constructor(
         )
 
         getProducts()
-    }
-
-    fun selectProduct(product: Product) {
-
-        _state.value = _state.value.copy(
-            selectedProduct = product
-        )
     }
 
     fun getProductById(productId: Int) {
