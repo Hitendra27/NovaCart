@@ -1,6 +1,7 @@
 package com.example.novacart.ui.screens.home
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -10,7 +11,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.novacart.domain.model.Product
@@ -32,6 +32,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import com.example.novacart.ui.components.ProductCard
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -147,20 +148,47 @@ fun HomeScreen(
 
             else -> {
 
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    contentPadding = PaddingValues(8.dp),
-                    modifier = Modifier.padding(innerPadding)
-                ) {
+                if (state.products.isEmpty()) {
 
-                    items(state.products) { product ->
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(innerPadding),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
 
-                        ProductCard(
-                            product = product,
-                            onClick = {
-                                onProductClick(product)
-                            }
-                        )
+                            Text(
+                                text = "No products found",
+                                style = MaterialTheme.typography.titleLarge
+                            )
+
+                            Text(
+                                text = "Try searching for something else.",
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
+                    }
+
+                } else {
+
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(2),
+                        contentPadding = PaddingValues(8.dp),
+                        modifier = Modifier.padding(innerPadding)
+                    ) {
+
+                        items(state.products) { product ->
+
+                            ProductCard(
+                                product = product,
+                                onClick = {
+                                    onProductClick(product)
+                                }
+                            )
+                        }
                     }
                 }
             }
