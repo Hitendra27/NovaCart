@@ -60,7 +60,39 @@ class ProductViewModel @Inject constructor(
 
         searchJob?.cancel()
 
-        searchJob = viewModelScope.launch {  }
+        searchJob = viewModelScope.launch {
+
+            _state.value = _state.value.copy(
+                searchQuery = query,
+                error = null
+            )
+
+            delay(500)
+
+            if (query.isBlank()) {
+            getProducts()
+                return@launch
+            }
+
+            _state.value = _state.value.copy(
+                isLoading = true
+            )
+
+            try {
+                val products = repository.searchProducts(query)
+
+                _state.value = _state.value.copy(
+                    isLoading = false,
+                    products = products
+                )
+            } catch (e: Exception) {
+
+                _state.value = _state.value.copy(
+                    isLoading = false,
+                    error = e.message
+                )
+            }
+        }
     }
 
 
